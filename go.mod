@@ -14,7 +14,7 @@ require (
 	code.superseriousbusiness.org/activity v1.15.0
 	code.superseriousbusiness.org/exif-terminator v0.11.0
 	code.superseriousbusiness.org/httpsig v1.4.0
-	code.superseriousbusiness.org/oauth2/v4 v4.9.0
+	code.superseriousbusiness.org/oauth2/v4 v4.5.4-0.20250606121655-9d54ef189d42
 	codeberg.org/gruf/go-bitutil v1.1.0
 	codeberg.org/gruf/go-bytesize v1.0.3
 	codeberg.org/gruf/go-byteutil v1.3.0
@@ -31,7 +31,7 @@ require (
 	codeberg.org/gruf/go-runners v1.6.3
 	codeberg.org/gruf/go-sched v1.2.4
 	codeberg.org/gruf/go-split v1.2.0
-	codeberg.org/gruf/go-storage v0.2.1
+	codeberg.org/gruf/go-storage v0.3.1
 	codeberg.org/gruf/go-structr v0.9.7
 	github.com/DmitriyVTitov/size v1.5.0
 	github.com/KimMachineGun/automemlimit v0.7.2
@@ -146,7 +146,6 @@ require (
 	github.com/go-viper/mapstructure/v2 v2.2.1 // indirect
 	github.com/go-xmlfmt/xmlfmt v0.0.0-20191208150333-d5b6f63a941b // indirect
 	github.com/goccy/go-json v0.10.5 // indirect
-	github.com/golang-jwt/jwt v3.2.2+incompatible // indirect
 	github.com/golang-jwt/jwt/v5 v5.2.2 // indirect
 	github.com/golang/geo v0.0.0-20200319012246-673a6f80352d // indirect
 	github.com/gorilla/context v1.1.2 // indirect
