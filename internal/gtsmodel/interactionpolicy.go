@@ -17,6 +17,8 @@
 
 package gtsmodel
 
+import "slices"
+
 // A policy URI is GoToSocial's internal representation of
 // one ActivityPub URI for an Actor or a Collection of Actors,
 // specific to the domain of enforcing interaction policies.
@@ -232,6 +234,39 @@ type PolicyRules struct {
 	ManualApproval PolicyValues `json:"WithApproval,omitempty"`
 }
 
+// DifferentFrom returns true if pr1 and pr2
+// are not equal in terms of nilness or content.
+func (pr1 *PolicyRules) DifferentFrom(pr2 *PolicyRules) bool {
+	// If one PolicyRules is nil and
+	// the other isn't, they're different.
+	if pr1 == nil && pr2 != nil ||
+		pr1 != nil && pr2 == nil {
+		return true
+	}
+
+	// Check if AutomaticApproval
+	// differs between the two.
+	if slices.Compare(
+		pr1.AutomaticApproval,
+		pr2.AutomaticApproval,
+	) != 0 {
+		return true
+	}
+
+	// Check if ManualApproval
+	// differs between the two.
+	if slices.Compare(
+		pr1.ManualApproval,
+		pr2.ManualApproval,
+	) != 0 {
+		return true
+	}
+
+	// They're the
+	// same picture.
+	return false
+}
+
 // Returns the default interaction policy
 // for the given visibility level.
 func DefaultInteractionPolicyFor(v Visibility) *InteractionPolicy {
@@ -421,4 +456,42 @@ func DefaultInteractionPolicyDirect() *InteractionPolicy {
 	c := new(InteractionPolicy)
 	*c = *defaultPolicyDirect
 	return c
+}
+
+// DifferentFrom returns true if p1 and p2 are different.
+func (ip1 *InteractionPolicy) DifferentFrom(ip2 *InteractionPolicy) bool {
+	// If one policy is null and the
+	// other isn't, they're different.
+	if ip1 == nil && ip2 != nil ||
+		ip1 != nil && ip2 == nil {
+		return true
+	}
+
+	// If they're both nil we don't
+	// need to check anything else.
+	if ip1 == nil && ip2 == nil {
+		return false
+	}
+
+	// If CanLike differs from one policy
+	// to the next, they're different.
+	if ip1.CanLike.DifferentFrom(ip2.CanLike) {
+		return true
+	}
+
+	// If CanReply differs from one policy
+	// to the next, they're different.
+	if ip1.CanReply.DifferentFrom(ip2.CanReply) {
+		return true
+	}
+
+	// If CanAnnounce differs from one policy
+	// to the next, they're different.
+	if ip1.CanAnnounce.DifferentFrom(ip2.CanAnnounce) {
+		return true
+	}
+
+	// Looks the
+	// same chief.
+	return false
 }

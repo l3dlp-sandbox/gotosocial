@@ -608,6 +608,9 @@ func (d *Dereferencer) enrichStatus(
 		return nil, nil, gtserror.Newf("error populating emojis for status %s: %w", uri, err)
 	}
 
+	// Check if interaction policy has changed between status and latestStatus.
+	interactionPolicyChanged := status.InteractionPolicy.DifferentFrom(latestStatus.InteractionPolicy)
+
 	if isNew {
 		// Simplest case, insert this new remote status into the database.
 		if err := d.state.DB.PutStatus(ctx, latestStatus); err != nil {
@@ -625,6 +628,7 @@ func (d *Dereferencer) enrichStatus(
 			tagsChanged,
 			mediaChanged,
 			emojiChanged,
+			interactionPolicyChanged,
 		)
 		if err != nil {
 			return nil, nil, gtserror.Newf("error handling edit for status %s: %w", uri, err)
@@ -1057,6 +1061,7 @@ func (d *Dereferencer) handleStatusEdit(
 	tagsChanged bool,
 	mediaChanged bool,
 	emojiChanged bool,
+	interactionPolicyChanged bool,
 ) (
 	cols []string,
 	err error,
@@ -1137,6 +1142,15 @@ func (d *Dereferencer) handleStatusEdit(
 		status.EmojiIDs = xslices.Gather(status.EmojiIDs[:0], status.Emojis, emojiByID)
 
 		// Emojis changed doesn't necessarily
+		// indicate an edit, it may just not have
+		// been previously populated properly.
+	}
+
+	if interactionPolicyChanged {
+		// Interaction policy changed.
+		cols = append(cols, "interaction_policy")
+
+		// Int pol changed doesn't necessarily
 		// indicate an edit, it may just not have
 		// been previously populated properly.
 	}
