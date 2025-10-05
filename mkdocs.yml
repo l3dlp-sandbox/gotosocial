@@ -38,7 +38,7 @@ plugins:
 extra:
   alternate:
     - name: English
-      link: /en/ 
+      link: /en/
       lang: en
     - name: 中文
       link: /zh-cn/
@@ -149,6 +149,7 @@ nav:
       - "admin/spam.md"
       - "admin/database_maintenance.md"
       - "admin/themes.md"
+      - "admin/slow_hardware.md"
   - "Federation":
       - "federation/index.md"
       - "federation/http_signatures.md"
